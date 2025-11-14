@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>API 테스트 페이지</title>
+</head>
+<body>
+    <h1>API 테스트</h1>
+
+    <button onclick="testApi()">/api/test 호출</button>
+
+    <p id="result"></p>
+
+    <script>
+        function testApi() {
+            fetch("/siheung_web/api/test")
+                .then(res => res.text())
+                .then(data => {
+                    document.getElementById("result").innerHTML = "응답: " + data;
+                })
+                .catch(err => {
+                    document.getElementById("result").innerHTML = "에러 발생: " + err;
+                });
+        }
+    </script>
+</body>
+</html>
