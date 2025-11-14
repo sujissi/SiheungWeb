@@ -1,0 +1,50 @@
+# Eclipse specific
+.classpath
+.project
+.settings/
+bin/
+target/
+build/
+
+# Eclipse Server metadata
+.metadata/
+.recommenders/
+Servers/
+
+# Web deployment output
+wtpwebapps/
+tmp/
+tmp0/
+tmp1/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+
+# Tomcat temp directories
+work/
+*.war
+
+# IntelliJ 
+.idea/
+*.iml
+
+# Node 
+node_modules/
+
+# Uploaded images 
+img/
