@@ -24,4 +24,20 @@ public class ComplaintController {
     public List<Complaint> findAll(){
         return service.findAll();
     }
+
+    @GetMapping("/complaints/{id}")
+    public Complaint findOne(@PathVariable Long id){
+        return service.findById(id);
+    }
+
+    @PutMapping("/complaints/{id}")
+    public Complaint update(@PathVariable Long id, @RequestParam String title){
+        return service.update(id, title);
+    }
+
+    @DeleteMapping("/complaints/{id}")
+    public String delete(@PathVariable Long id){
+        service.delete(id);
+        return "삭제 완료: " + id;
+    }
 }
