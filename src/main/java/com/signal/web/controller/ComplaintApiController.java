@@ -7,51 +7,43 @@ import com.signal.web.service.ComplaintService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-public class ComplaintController {
+@RequestMapping("/api")
+public class ComplaintApiController {
 
     private final ComplaintService service;
 
-    public ComplaintController(ComplaintService service) {
+    public ComplaintApiController(ComplaintService service) {
         this.service = service;
     }
 
-    // CREATE
     @PostMapping("/complaints")
     public ComplaintResponse create(@RequestBody ComplaintRequest request) {
         Complaint saved = service.create(request.getTitle());
         return new ComplaintResponse(saved);
     }
 
-    // READ all
     @GetMapping("/complaints")
     public List<ComplaintResponse> findAll() {
-        return service.findAll()
-                .stream()
+        return service.findAll().stream()
                 .map(ComplaintResponse::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // READ one
     @GetMapping("/complaints/{id}")
     public ComplaintResponse findOne(@PathVariable Long id) {
-        Complaint complaint = service.findById(id);
-        return new ComplaintResponse(complaint);
+        return new ComplaintResponse(service.findById(id));
     }
 
-    // UPDATE
     @PutMapping("/complaints/{id}")
     public ComplaintResponse update(
             @PathVariable Long id,
             @RequestBody ComplaintRequest request) {
 
-        Complaint updated = service.update(id, request.getTitle());
-        return new ComplaintResponse(updated);
+        return new ComplaintResponse(service.update(id, request.getTitle()));
     }
 
-    // DELETE
     @DeleteMapping("/complaints/{id}")
     public String delete(@PathVariable Long id) {
         service.delete(id);

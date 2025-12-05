@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>민원 목록</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .complaint-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .complaint-table th,
+        .complaint-table td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+
+<h2>민원 목록</h2>
+
+<table class="complaint-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>제목</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${complaints}">
+        <td th:text="${c.id}"></td>
+        <td th:text="${c.title}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
