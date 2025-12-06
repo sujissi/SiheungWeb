@@ -2,40 +2,72 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>민원 목록</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        .complaint-table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-        }
-        .complaint-table th,
-        .complaint-table td {
-            border: 1px solid black;
-            padding: 10px;
-        }
-        th { background: #f0f0f0; }
-    </style>
+    <title>시:그널 - 민원 목록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 
-<h2>민원 목록</h2>
+<div th:replace="layout/header :: header"></div>
 
-<table class="complaint-table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>제목</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="c : ${complaints}">
-        <td th:text="${c.id}"></td>
-        <td th:text="${c.title}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+
+    <section style="margin-bottom: 40px;">
+        <h2 style="color: var(--primary-color);">🏆 공감 TOP 민원</h2>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <a th:each="c : ${top3}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card" style="background: #eef6fc;">
+                <div class="card-top">
+                    <span class="badge badge-cat" th:text="${c.category}"></span>
+                    <span class="badge badge-like">♥ <span th:text="${c.likes}"></span></span>
+                </div>
+                <div class="card-title" th:text="${c.title}" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></div>
+                <div class="card-info" th:text="${c.location}">위치</div>
+            </a>
+        </div>
+    </section>
+
+    <div class="filter-bar">
+        <form method="get" action="/complaints/list" style="display: flex; gap: 10px; align-items: center; width: 100%;">
+            <select name="category" class="form-control" style="width: auto;">
+                <option value="">전체 카테고리</option>
+                <option value="도로">도로/시설</option>
+                <option value="교통">교통</option>
+                <option value="환경">환경</option>
+                <option value="안전">안전</option>
+            </select>
+
+            <select name="sort" class="form-control" style="width: auto;">
+                <option value="latest">최신순</option>
+                <option value="likes">공감순</option>
+                <option value="status">처리상태순</option>
+            </select>
+
+            <button type="submit" style="background: #333; color: white; border: none; padding: 0 15px; border-radius: 4px; cursor: pointer;">검색</button>
+        </form>
+    </div>
+
+    <div class="card-list">
+        <a th:each="c : ${complaints}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="flex: 1;">
+                    <div class="card-top">
+                        <span class="badge badge-cat" th:text="${c.category}">카테고리</span>
+                        <span class="badge status" style="background:#eee;" th:text="${c.status}">접수완료</span>
+                    </div>
+                    <span class="card-title" th:text="${c.title}">민원 제목</span>
+                    <div class="card-info">
+                        <span class="badge badge-loc" th:text="${c.location}">정왕동</span>
+                        <span>등록일: <span th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd')}"></span></span>
+                    </div>
+                </div>
+                <div style="text-align: center; padding-left: 20px; border-left: 1px solid #eee;">
+                    <div style="font-size: 0.8rem; color: #888;">공감</div>
+                    <div style="font-size: 1.2rem; font-weight: bold; color: #e67e22;" th:text="${c.likes}">12</div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>
 
 </body>
 </html>

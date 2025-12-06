@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>시:그널 - 시흥시 생활민원 플랫폼</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="layout/header :: header"></div>
+
+<div class="container">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h2 style="margin-bottom: 10px;">어떤 불편이 있으신가요?</h2>
+        <p style="color: #666;">카테고리를 선택하면 바로 민원을 작성할 수 있습니다.</p>
+    </div>
+
+    <div class="category-quick-nav">
+        <a href="/complaints/new?cat=도로" class="cat-btn">🚧 도로/시설</a>
+        <a href="/complaints/new?cat=교통" class="cat-btn">🚌 교통</a>
+        <a href="/complaints/new?cat=환경" class="cat-btn">🌳 환경/청소</a>
+        <a href="/complaints/new?cat=안전" class="cat-btn">👮 안전</a>
+        <a href="/complaints/new?cat=기타" class="cat-btn">📝 기타</a>
+    </div>
+
+    <div class="main-grid">
+        <section>
+            <div class="section-title">
+                <span>🔥 실시간 인기 민원</span>
+                <span style="font-size: 0.8rem; color: #888;">공감 많은 순</span>
+            </div>
+            <div class="card-list">
+                <a th:each="c : ${top5}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card">
+                    <div class="card-top">
+                        <span class="badge badge-cat" th:text="${c.category}">카테고리</span>
+                        <span class="badge badge-like">♥ <span th:text="${c.likes}">0</span></span>
+                    </div>
+                    <span class="card-title" th:text="${c.title}">제목</span>
+                    <div class="card-info">
+                        <span th:text="${c.location}">위치(동)</span> |
+                        <span th:text="${c.status}">상태</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">
+                <span>🕒 최근 등록된 민원</span>
+                <a href="/complaints/list" style="font-size: 0.8rem; color: #666;">전체보기 ></a>
+            </div>
+            <div class="card-list">
+                <a th:each="c : ${latest}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card">
+                    <div class="card-top">
+                        <span class="badge badge-cat" th:text="${c.category}">카테고리</span>
+                        <span style="color: #999;" th:text="${#temporals.format(c.createdAt, 'MM-dd')}">날짜</span>
+                    </div>
+                    <span class="card-title" th:text="${c.title}">제목</span>
+                    <div class="card-info">
+                        <span class="badge badge-loc" th:text="${c.location}">위치</span>
+                        <span th:if="${c.likes > 0}" style="color: #e67e22;">♥ <span th:text="${c.likes}"></span></span>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <div class="info-grid">
+        <div class="info-box">
+            <h3>📢 공지사항</h3>
+            <ul class="info-list" style="padding-left: 0;">
+                <li>[안내] 시:그널 서비스 오픈 안내</li>
+                <li>[점검] 서버 점검 예정 (12/10)</li>
+                <li>[안내] 불법 주정차 신고 가이드</li>
+            </ul>
+        </div>
+        <div class="info-box">
+            <h3>❓ 자주 하는 질문 (FAQ)</h3>
+            <ul class="info-list" style="padding-left: 0;">
+                <li>Q. 민원 처리는 얼마나 걸리나요?</li>
+                <li>Q. 공감 수는 어떤 역할을 하나요?</li>
+                <li>Q. 민원 수정/삭제는 어떻게 하나요?</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

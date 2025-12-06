@@ -1,0 +1,209 @@
+/* style.css */
+:root {
+    --primary-color: #005eb8; /* 시흥 블루 계열 */
+    --primary-light: #e1effe;
+    --secondary-bg: #f5f7fa;
+    --text-color: #333;
+    --text-light: #666;
+    --border-color: #ddd;
+    --white: #ffffff;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --radius: 10px;
+}
+
+body {
+    font-family: 'Pretendard', sans-serif;
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* 헤더 */
+header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border-color);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--primary-color);
+    text-decoration: none;
+    letter-spacing: -1px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    margin-left: 20px;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--primary-color); }
+
+/* 메인: 카테고리 퀵 버튼 (제안서 p.9 반영) */
+.category-quick-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.cat-btn {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 20px 10px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+}
+
+.cat-btn:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+/* 메인: 2단 레이아웃 (인기 vs 최신) */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+    .main-grid { grid-template-columns: 1fr; }
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 카드 스타일 */
+.card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card {
+    background: var(--white);
+    padding: 18px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: inherit;
+    border-left: 5px solid transparent;
+    transition: transform 0.2s;
+}
+
+.card:hover { transform: translateY(-2px); border-left-color: var(--primary-color); }
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.card-title {
+    font-size: 1.05rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.card-info {
+    font-size: 0.85rem;
+    color: #777;
+    display: flex;
+    gap: 10px;
+}
+
+/* 배지 시스템 */
+.badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-cat { background: #eee; color: #555; }
+.badge-loc { background: #e3f2fd; color: #1565c0; }
+.badge-like { color: #e67e22; font-weight: 800; }
+
+/* 공지사항 & FAQ 박스 (제안서 p.9 반영) */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.info-box {
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.info-list li {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: #555;
+    list-style: none;
+}
+
+/* 상세/폼 공통 */
+.form-box {
+    background: var(--white);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+.form-control { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+.btn-submit { background: var(--primary-color); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+
+/* 리스트 페이지 필터 */
+.filter-bar {
+    background: var(--white);
+    padding: 15px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+}

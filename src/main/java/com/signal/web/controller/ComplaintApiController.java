@@ -20,7 +20,7 @@ public class ComplaintApiController {
 
     @PostMapping("/complaints")
     public ComplaintResponse create(@RequestBody ComplaintRequest request) {
-        Complaint saved = service.create(request.getTitle());
+        Complaint saved = service.create(request);
         return new ComplaintResponse(saved);
     }
 
@@ -41,12 +41,40 @@ public class ComplaintApiController {
             @PathVariable Long id,
             @RequestBody ComplaintRequest request) {
 
-        return new ComplaintResponse(service.update(id, request.getTitle()));
+        return new ComplaintResponse(service.update(id, request));
     }
 
     @DeleteMapping("/complaints/{id}")
     public String delete(@PathVariable Long id) {
         service.delete(id);
         return "삭제 완료: " + id;
+    }
+
+    @GetMapping("/top5")
+    public List<ComplaintResponse> top5() {
+        return service.getTop5().stream()
+                .map(ComplaintResponse::new)
+                .toList();
+    }
+
+    @GetMapping("/category/{category}")
+    public List<ComplaintResponse> findByCategory(@PathVariable String category) {
+        return service.getByCategory(category).stream()
+                .map(ComplaintResponse::new)
+                .toList();
+    }
+
+    @GetMapping("/status/{status}")
+    public List<ComplaintResponse> findByStatus(@PathVariable String status) {
+        return service.getByStatus(status).stream()
+                .map(ComplaintResponse::new)
+                .toList();
+    }
+
+    @GetMapping("/search")
+    public List<ComplaintResponse> search(@RequestParam String keyword) {
+        return service.search(keyword).stream()
+                .map(ComplaintResponse::new)
+                .toList();
     }
 }
