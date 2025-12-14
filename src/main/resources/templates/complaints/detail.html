@@ -61,6 +61,8 @@
             </h3>
 
             <form action="/comments/add" method="post" style="background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 5px; margin-bottom: 20px;">
+
+                <input type="hidden" name="complaintId" th:value="${complaint.id}" />
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
                     <input type="text" name="author" placeholder="닉네임" style="border: 1px solid #ddd; padding: 8px; width: 150px; border-radius: 4px;">
                     <input type="password" name="password" placeholder="비밀번호" style="border: 1px solid #ddd; padding: 8px; width: 150px; border-radius: 4px;">

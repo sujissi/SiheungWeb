@@ -1,13 +1,13 @@
 package com.signal.web.controller;
 
 import com.signal.web.service.ComplaintService;
+import com.signal.web.service.CommentService; // import 확인
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.signal.web.domain.Complaint;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -15,9 +15,11 @@ import java.util.List;
 public class ComplaintPageController {
 
     private final ComplaintService service;
+    private final CommentService commentService;
 
-    public ComplaintPageController(ComplaintService service) {
+    public ComplaintPageController(ComplaintService service, CommentService commentService) {
         this.service = service;
+        this.commentService = commentService;
     }
 
     @GetMapping("/")
@@ -46,6 +48,7 @@ public class ComplaintPageController {
         } else {
             complaints = service.findAll();
         }
+
         model.addAttribute("top3", service.getTop5());
         model.addAttribute("complaints", complaints);
         return "complaints/list";
@@ -70,7 +73,7 @@ public class ComplaintPageController {
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable Long id, Model model) {
         model.addAttribute("complaint", service.findById(id));
-        model.addAttribute("comments", new ArrayList<>());
+        model.addAttribute("comments", commentService.getComments(id));
         model.addAttribute("now", LocalDateTime.now());
         return "complaints/detail";
     }
@@ -78,7 +81,6 @@ public class ComplaintPageController {
     @PostMapping("/like/{id}")
     public String like(@PathVariable Long id) {
         service.increaseLikes(id);
-
         return "redirect:/complaints/detail/" + id;
     }
 }
