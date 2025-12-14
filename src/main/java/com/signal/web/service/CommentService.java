@@ -25,7 +25,7 @@ public class CommentService {
         return commentRepository.findAllByComplaintIdOrderByIdDesc(complaintId);
     }
 
-    // 댓글 저장하기
+    // 댓글 저장하기 (이미지 업로드 로직 제거됨)
     @Transactional
     public void create(Long complaintId, String author, String password, String content) {
         // 댓글을 달 부모 게시글 찾기

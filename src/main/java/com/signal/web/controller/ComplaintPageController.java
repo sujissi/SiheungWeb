@@ -5,6 +5,7 @@ import com.signal.web.service.CommentService; // import 확인
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import com.signal.web.domain.Complaint;
 
 import java.time.LocalDateTime;
@@ -55,7 +56,8 @@ public class ComplaintPageController {
     }
 
     @GetMapping("/new")
-    public String createForm() {
+    public String createForm(@RequestParam(required = false) String cat, Model model) {
+        model.addAttribute("savedCat", cat);
         return "complaints/new";
     }
 
@@ -64,9 +66,11 @@ public class ComplaintPageController {
             @RequestParam String title,
             @RequestParam String content,
             @RequestParam String category,
-            @RequestParam String location) {
+            @RequestParam String location,
+            @RequestParam(required = false) MultipartFile files) {
 
-        service.create(title, content, category, location);
+        service.create(title, content, category, location, files);
+
         return "redirect:/complaints/list";
     }
 
@@ -81,6 +85,6 @@ public class ComplaintPageController {
     @PostMapping("/like/{id}")
     public String like(@PathVariable Long id) {
         service.increaseLikes(id);
-        return "redirect:/complaints/detail/" + id;
+        return "redirect:/complaints/detail/" + id + "#like-section";
     }
 }

@@ -26,11 +26,12 @@
             <label>카테고리 <span style="color:red">*</span></label>
             <select name="category" class="form-control" required>
                 <option value="">카테고리를 선택하세요</option>
-                <option value="도로">🚧 도로/시설</option>
-                <option value="교통">🚌 교통</option>
-                <option value="환경">🌳 환경/청소</option>
-                <option value="안전">👮 안전</option>
-                <option value="기타">📝 기타</option>
+
+                <option value="도로" th:selected="${savedCat == '도로'}">🚧 도로/시설</option>
+                <option value="교통" th:selected="${savedCat == '교통'}">🚌 교통</option>
+                <option value="환경" th:selected="${savedCat == '환경'}">🌳 환경/청소</option>
+                <option value="안전" th:selected="${savedCat == '안전'}">👮 안전</option>
+                <option value="기타" th:selected="${savedCat == '기타'}">📝 기타</option>
             </select>
         </div>
 

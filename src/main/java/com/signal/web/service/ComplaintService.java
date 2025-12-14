@@ -5,24 +5,56 @@ import com.signal.web.dto.complaint.ComplaintRequest;
 import com.signal.web.repository.ComplaintRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile; // 파일 처리를 위한 import
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ComplaintService {
 
     private final ComplaintRepository repository;
+    private final String uploadPath = "C:/signal-uploads/";
 
     public ComplaintService(ComplaintRepository repository) {
         this.repository = repository;
     }
 
-    public Complaint create(String title, String content, String category, String location) {
+    public Complaint create(String title, String content, String category, String location, MultipartFile file) {
         Complaint c = new Complaint();
         c.setTitle(title);
         c.setContent(content);
         c.setCategory(category);
         c.setLocation(location);
+
+        // 이미지 처리 로직
+        if (file != null && !file.isEmpty()) {
+            try {
+                // 1. 파일 이름 중복 방지를 위해 UUID 생성
+                String uuid = UUID.randomUUID().toString();
+                String fileName = uuid + "_" + file.getOriginalFilename();
+
+                // 2. 저장할 파일 객체 생성
+                File saveFile = new File(uploadPath, fileName);
+
+                // 폴더가 없으면 에러가 날 수 있으므로 폴더 생성 코드 추가
+                if (!saveFile.getParentFile().exists()) {
+                    saveFile.getParentFile().mkdirs();
+                }
+
+                // 3. 실제 파일 저장
+                file.transferTo(saveFile);
+
+                // 4. DB에는 "파일 이름"만 저장
+                c.setImagePath(fileName);
+
+            } catch (IOException e) {
+                e.printStackTrace(); // 에러 로그 출력
+            }
+        }
+
         return repository.save(c);
     }
 

@@ -25,12 +25,16 @@
                 <span>📍 <span th:text="${complaint.location}">위치 정보</span></span>
             </div>
         </div>
-
+        <div th:if="${complaint.imagePath != null}" style="margin-bottom: 20px; text-align: center;">
+            <img th:src="@{'/uploads/' + ${complaint.imagePath}}"
+                 alt="현장 사진"
+                 style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
+        </div>
         <div style="min-height: 150px; white-space: pre-wrap; line-height: 1.6; color: #333;" th:text="${complaint.content}">
             내용
         </div>
 
-        <div style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+        <div id="like-section" style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
 
             <form th:action="@{|/complaints/like/${complaint.id}|}" method="post">
                 <button type="submit" style="background: white; border: 2px solid #e67e22; color: #e67e22; padding: 8px 25px; border-radius: 50px; font-size: 1rem; cursor: pointer; font-weight: bold; transition: 0.2s;">
