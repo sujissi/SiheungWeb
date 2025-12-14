@@ -90,4 +90,12 @@ public class ComplaintService {
     public List<Complaint> getUrgentList() {
         return repository.findUrgentComplaints();
     }
+
+    @Transactional
+    public void increaseLikes(Long id) {
+        Complaint complaint = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        complaint.setLikes(complaint.getLikes() + 1);
+    }
 }

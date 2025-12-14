@@ -1,11 +1,14 @@
-<div th:fragment="header">
+<div th:fragment="header" xmlns:th="http://www.thymeleaf.org">
     <header>
         <div class="header-inner">
-            <a href="/complaints/" class="logo">시:그널 <span style="font-size:14px; color:#666; font-weight:normal;">| 시흥시 민원 웹사이트</span></a>
+            <a href="/complaints/" class="logo">
+                <img th:src="@{/images/logo.png}" alt="시:그널 로고" height="80">
+            </a>
 
             <nav class="nav-links">
+                <a href="/complaints/">홈</a>
                 <a href="/complaints/list">민원 목록</a>
-                <a href="/complaints/new" style="color:var(--primary-color);">민원 작성</a>
+                <a href="/complaints/new">민원 작성</a>
                 <a href="#">로그인</a>
             </nav>
         </div>
