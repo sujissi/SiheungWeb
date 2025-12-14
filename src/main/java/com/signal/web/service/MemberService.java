@@ -19,10 +19,14 @@ public class MemberService {
     public Member create(String username, String email, String password, String nickname) {
         Member member = new Member();
         member.setUsername(username);
-        member.setEmail(email);
         member.setNickname(nickname);
         member.setPassword(passwordEncoder.encode(password));
 
+        if (email != null && email.trim().isEmpty()) {
+            member.setEmail(null);
+        } else {
+            member.setEmail(email);
+        }
         return memberRepository.save(member);
     }
 }

@@ -55,7 +55,7 @@
             </div>
 
             <div th:unless="${complaint.answer != null}" style="color: #888; text-align: center; padding: 20px 0;">
-                ⏳ 현재 담당 부서에서 내용을 확인하고 있습니다.
+                현재 담당 부서에서 내용을 확인하고 있습니다.
             </div>
         </div>
 
@@ -92,8 +92,6 @@
             </ul>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin-top: 40px;">
-
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
 
             <div th:if="${(complaint.author != null and #authentication.name == complaint.author.username) or #authorization.expression('hasRole(''ADMIN'')')}">
@@ -107,8 +105,9 @@
 
             <div sec:authorize="isAnonymous()"></div>
 
-            <a th:href="@{'/complaints/list'}" style="text-decoration: none; color: #666;">
-                목록으로 돌아가기
+            <a th:href="@{'/complaints/list'}"
+               style="background: #6c757d; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.95rem; display: inline-block; margin-left: auto;">
+                목록으로
             </a>
         </div>
     </div>

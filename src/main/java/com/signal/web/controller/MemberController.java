@@ -33,10 +33,10 @@ public class MemberController {
     @PostMapping("/signup")
     public String signup(@RequestParam String username,
                          @RequestParam String password,
-                         @RequestParam String email,
+                         @RequestParam(required = false) String email,
                          @RequestParam String nickname) {
 
         memberService.create(username, email, password, nickname);
-        return "redirect:/members/login"; // 가입 완료 후 로그인 페이지로 이동
+        return "redirect:/members/login";
     }
 }
