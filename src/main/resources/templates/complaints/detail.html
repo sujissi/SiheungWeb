@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>시:그널 - 상세 보기</title>
@@ -64,7 +64,7 @@
                 💬 댓글 <span style="color: #e67e22;" th:text="${comments != null ? #lists.size(comments) : 0}">0</span>
             </h3>
 
-            <form action="/comments/add" method="post" style="background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 5px; margin-bottom: 20px;">
+            <form th:action="@{/comments/add}" method="post" style="background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 5px; margin-bottom: 20px;">
 
                 <input type="hidden" name="complaintId" th:value="${complaint.id}" />
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -93,8 +93,23 @@
         </div>
 
         <hr style="border: 0; border-top: 1px solid #eee; margin-top: 40px;">
-        <div style="text-align: right; margin-top: 20px;">
-            <a th:href="@{'/complaints/list'}" style="text-decoration: none; color: #666;">목록으로 돌아가기</a>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+
+            <div sec:authorize="isAuthenticated()">
+                <form th:action="@{|/complaints/delete/${complaint.id}|}" method="post"
+                      onsubmit="return confirm('정말 삭제하시겠습니까? 복구할 수 없습니다.');">
+                    <button type="submit" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+                        🗑️ 삭제하기
+                    </button>
+                </form>
+            </div>
+
+            <div sec:authorize="isAnonymous()"></div>
+
+            <a th:href="@{'/complaints/list'}" style="text-decoration: none; color: #666;">
+                목록으로 돌아가기
+            </a>
         </div>
     </div>
 </div>

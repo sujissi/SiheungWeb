@@ -87,4 +87,11 @@ public class ComplaintPageController {
         service.increaseLikes(id);
         return "redirect:/complaints/detail/" + id + "#like-section";
     }
+
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        service.delete(id);
+
+        return "redirect:/complaints/list";
+    }
 }

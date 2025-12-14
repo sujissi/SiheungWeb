@@ -20,7 +20,7 @@
         <p style="color: var(--text-light); margin: 0;">여러분의 제보가 시흥을 바꿉니다. 정확한 정보를 입력해주세요.</p>
     </div>
 
-    <form method="post" action="/complaints/new" class="form-box" enctype="multipart/form-data">
+    <form method="post" th:action="@{/complaints/new}" class="form-box" enctype="multipart/form-data">
 
         <div class="form-group">
             <label>카테고리 <span style="color:red">*</span></label>
