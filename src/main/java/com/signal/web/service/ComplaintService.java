@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class ComplaintService {
@@ -143,5 +144,28 @@ public class ComplaintService {
         Complaint complaint = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("민원글이 없습니다."));
         complaint.setStatus(newStatus);
+    }
+
+    @Transactional
+    public void registerAnswer(Long id, String answerContent) {
+        Complaint complaint = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("민원글이 없습니다."));
+
+        complaint.setAnswer(answerContent); // 답변 내용 저장
+
+        if ("접수".equals(complaint.getStatus())) {
+            complaint.setStatus("완료");
+        }
+    }
+    public List<Complaint> findAll(String sort) {
+        if ("oldest".equals(sort)) {
+            return repository.findAll(Sort.by(Sort.Direction.ASC, "id")); // 과거순 (ID 오름차순)
+        } else if ("likes".equals(sort)) {
+            return repository.findAll(Sort.by(Sort.Direction.DESC, "likes")); // 공감 많은 순
+        } else if ("status".equals(sort)) {
+            return repository.findAll(Sort.by(Sort.Direction.ASC, "status")); // 상태별 정렬 (가나다순)
+        }
+
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }
