@@ -1,4 +1,4 @@
-package com.signal.web.controller.admin;
+package com.signal.web.controller;
 
 import com.signal.web.service.ComplaintService;
 import org.springframework.stereotype.Controller;
@@ -9,26 +9,30 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
 
-    private final ComplaintService service;
+    private final ComplaintService complaintService;
 
-    public AdminController(ComplaintService service) {
-        this.service = service;
+    public AdminController(ComplaintService complaintService) {
+        this.complaintService = complaintService;
     }
 
-    @GetMapping
-    public String adminHome(Model model) {
-        model.addAttribute("popular", service.getAllPopular());
-        model.addAttribute("urgent", service.getUrgentList());
-        return "admin/home";
+    // 관리자 페이지 메인 (전체 목록)
+    @GetMapping("/complaints")
+    public String adminList(Model model) {
+        model.addAttribute("complaints", complaintService.findAll());
+        return "admin/list";
     }
 
-    @PostMapping("/update-status/{id}")
-    public String updateStatus(
-            @PathVariable Long id,
-            @RequestParam String status
-    ) {
-        var complaint = service.findById(id);
-        complaint.setStatus(status);
-        return "redirect:/admin";
+    // 상태 변경 기능
+    @PostMapping("/complaints/status/{id}")
+    public String updateStatus(@PathVariable Long id, @RequestParam String status) {
+        complaintService.updateStatus(id, status);
+        return "redirect:/admin/complaints";
+    }
+
+    // 관리자 권한 강제 삭제
+    @PostMapping("/complaints/delete/{id}")
+    public String deleteComplaint(@PathVariable Long id) {
+        complaintService.delete(id);
+        return "redirect:/admin/complaints";
     }
 }

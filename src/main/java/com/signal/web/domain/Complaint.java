@@ -10,6 +10,10 @@ import java.time.LocalDateTime;
 @Getter @Setter
 public class Complaint {
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Member author;
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

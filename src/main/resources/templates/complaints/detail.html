@@ -96,7 +96,7 @@
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
 
-            <div sec:authorize="isAuthenticated()">
+            <div th:if="${(complaint.author != null and #authentication.name == complaint.author.username) or #authorization.expression('hasRole(''ADMIN'')')}">
                 <form th:action="@{|/complaints/delete/${complaint.id}|}" method="post"
                       onsubmit="return confirm('정말 삭제하시겠습니까? 복구할 수 없습니다.');">
                     <button type="submit" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">

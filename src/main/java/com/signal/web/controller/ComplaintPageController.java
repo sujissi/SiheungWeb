@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.signal.web.domain.Complaint;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -67,9 +68,10 @@ public class ComplaintPageController {
             @RequestParam String content,
             @RequestParam String category,
             @RequestParam String location,
-            @RequestParam(required = false) MultipartFile files) {
+            @RequestParam(required = false) MultipartFile files,
+            Principal principal) {
 
-        service.create(title, content, category, location, files);
+        service.create(title, content, category, location, files, principal.getName());
 
         return "redirect:/complaints/list";
     }

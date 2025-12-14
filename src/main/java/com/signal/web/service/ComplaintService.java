@@ -5,7 +5,9 @@ import com.signal.web.dto.complaint.ComplaintRequest;
 import com.signal.web.repository.ComplaintRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile; // 파일 처리를 위한 import
+import org.springframework.web.multipart.MultipartFile;
+import com.signal.web.domain.Member;
+import com.signal.web.repository.MemberRepository;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,17 +19,22 @@ public class ComplaintService {
 
     private final ComplaintRepository repository;
     private final String uploadPath = "C:/signal-uploads/";
+    private final MemberRepository memberRepository; // [추가]
 
-    public ComplaintService(ComplaintRepository repository) {
+    public ComplaintService(ComplaintRepository repository, MemberRepository memberRepository) {
         this.repository = repository;
+        this.memberRepository = memberRepository;
     }
 
-    public Complaint create(String title, String content, String category, String location, MultipartFile file) {
+    public Complaint create(String title, String content, String category, String location, MultipartFile file, String username) {
         Complaint c = new Complaint();
         c.setTitle(title);
         c.setContent(content);
         c.setCategory(category);
         c.setLocation(location);
+        Member author = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+        c.setAuthor(author);
 
         // 이미지 처리 로직
         if (file != null && !file.isEmpty()) {
@@ -129,5 +136,12 @@ public class ComplaintService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
         complaint.setLikes(complaint.getLikes() + 1);
+    }
+
+    @Transactional
+    public void updateStatus(Long id, String newStatus) {
+        Complaint complaint = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("민원글이 없습니다."));
+        complaint.setStatus(newStatus);
     }
 }

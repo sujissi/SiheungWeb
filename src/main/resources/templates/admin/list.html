@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
+        th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: center; }
+        th { background: #f1f1f1; }
+    </style>
+</head>
+<body>
+<div th:replace="layout/header :: header"></div>
+
+<div class="container" style="max-width: 1000px; margin-top: 30px;">
+    <h2>🛡️ 민원 관리 대시보드</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>상태</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${complaints}">
+            <td th:text="${c.id}"></td>
+
+            <td>
+                <form th:action="@{|/admin/complaints/status/${c.id}|}" method="post">
+                    <select name="status" onchange="this.form.submit()" style="padding: 5px;">
+                        <option value="접수" th:selected="${c.status == '접수'}">접수</option>
+                        <option value="처리중" th:selected="${c.status == '처리중'}">처리중</option>
+                        <option value="완료" th:selected="${c.status == '완료'}">완료</option>
+                    </select>
+                </form>
+            </td>
+
+            <td><a th:href="@{'/complaints/detail/' + ${c.id}}" th:text="${c.title}">제목</a></td>
+
+            <td th:text="${c.author != null ? c.author.nickname : '익명'}"></td>
+
+            <td>
+                <form th:action="@{|/admin/complaints/delete/${c.id}|}" method="post" onsubmit="return confirm('삭제하시겠습니까?');">
+                    <button type="submit" style="background: red; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

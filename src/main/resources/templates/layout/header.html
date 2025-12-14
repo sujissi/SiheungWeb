@@ -13,6 +13,7 @@
 
                 <a href="/members/login" sec:authorize="isAnonymous()">로그인</a>
                 <a href="/members/signup" sec:authorize="isAnonymous()">회원가입</a>
+                <a href="/admin/complaints" sec:authorize="hasRole('ADMIN')" style="color: red; font-weight: bold;">관리자</a>
 
                 <a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a>
             </nav>

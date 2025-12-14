@@ -21,19 +21,23 @@ public class UserSecurityService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // 1. DB에서 회원 찾기
         Optional<Member> _member = memberRepository.findByUsername(username);
 
         if (_member.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
         }
 
-        // 2. 스프링 시큐리티가 이해할 수 있는 User 객체로 변환해서 리턴
         Member member = _member.get();
+
+        String role = "USER";
+        if ("admin".equals(username)) {
+            role = "ADMIN";
+        }
+
         return User.builder()
                 .username(member.getUsername())
                 .password(member.getPassword())
-                .roles("USER")
+                .roles(role)
                 .build();
     }
 }

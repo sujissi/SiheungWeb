@@ -19,8 +19,13 @@ public class SecurityConfig {
         http
                 // 1. 페이지 권한 설정
                 .authorizeHttpRequests((authorize) -> authorize
-                        // h2-console 주소도 로그인 없이 접속 허용 목록에 추가해야 함 (/h2-console/**)
-                        .requestMatchers("/", "/complaints/**", "/css/**", "/images/**", "/uploads/**", "/members/signup", "/members/login", "/h2-console/**").permitAll()
+                        // 1. 누구나 접속 가능
+                        .requestMatchers("/", "/complaints/**", "/css/**", "/images/**", "/uploads/**", "/members/**", "/h2-console/**").permitAll()
+
+                        // 2. [추가] /admin/ 으로 시작하는 주소는 'ADMIN' 권한만 가능
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // 3. 나머지는 로그인 필수
                         .anyRequest().authenticated()
                 )
 
