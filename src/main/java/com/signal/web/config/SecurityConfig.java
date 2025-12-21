@@ -5,14 +5,22 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter; // [추가]
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.signal.web.service.AuthTokenService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final LoginSuccessHandler loginSuccessHandler;
+    private final AuthTokenFilter authTokenFilter;
+
+    public SecurityConfig(LoginSuccessHandler loginSuccessHandler, AuthTokenFilter authTokenFilter) {
+        this.loginSuccessHandler = loginSuccessHandler;
+        this.authTokenFilter = authTokenFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -41,7 +49,7 @@ public class SecurityConfig {
                 // 2. 로그인 설정
                 .formLogin((form) -> form
                         .loginPage("/members/login")
-                        .defaultSuccessUrl("/complaints/list")
+                        .successHandler(loginSuccessHandler)
                         .permitAll()
                 )
                 // 3. 로그아웃 설정
@@ -49,13 +57,12 @@ public class SecurityConfig {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
                         .logoutSuccessUrl("/complaints/list")
                         .invalidateHttpSession(true)
+                        .deleteCookies(AuthTokenService.COOKIE_NAME)
                 );
+
+        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
