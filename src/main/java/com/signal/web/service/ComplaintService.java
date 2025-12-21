@@ -168,4 +168,7 @@ public class ComplaintService {
 
         return repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
+    public List<Complaint> getLatest5() {
+        return repository.findTop5ByOrderByCreatedAtDesc();
+    }
 }

@@ -9,7 +9,7 @@
                 <a href="/complaints/">홈</a>
                 <a href="/complaints/list">민원 목록</a>
 
-                <a href="/complaints/new" class="nav-btn" sec:authorize="isAuthenticated()">민원 작성</a>
+                <a href="/complaints/new" class="nav-btn" sec:authorize="isAuthenticated() and !hasRole('ADMIN')">민원 작성</a>
 
                 <a href="/members/login" sec:authorize="isAnonymous()">로그인</a>
                 <a href="/members/signup" sec:authorize="isAnonymous()">회원가입</a>

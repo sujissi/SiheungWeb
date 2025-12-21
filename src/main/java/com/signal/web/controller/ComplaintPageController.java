@@ -27,7 +27,7 @@ public class ComplaintPageController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("top5", service.getTop5());
-        model.addAttribute("latest", service.findAll());
+        model.addAttribute("latest", service.getLatest5());
         return "complaints/home";
     }
 

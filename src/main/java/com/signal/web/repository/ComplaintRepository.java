@@ -24,4 +24,6 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     @Query("SELECT c FROM Complaint c WHERE c.status = 'RECEIVED' ORDER BY c.likes DESC")
     List<Complaint> findUrgentComplaints();
+
+    List<Complaint> findTop5ByOrderByCreatedAtDesc();
 }
