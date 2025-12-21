@@ -33,11 +33,11 @@
             <a th:each="c : ${top5}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card">
               <div class="card-top">
                 <span class="badge badge-cat" th:text="${c.category}">카테고리</span>
-                <span class="badge badge-like">♥ <span th:text="${c.likes}">0</span></span>
+                <span style="color: #999" th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd')}">날짜</span>
               </div>
               <span class="card-title" th:text="${c.title}">제목</span>
               <div class="card-info">
-                <span th:text="${c.location}">위치(동)</span> |
+                <span class="badge badge-loc" th:text="${c.location}">위치</span>
                 <span th:text="${c.status}">상태</span>
               </div>
             </a>
@@ -53,7 +53,7 @@
             <a th:each="c : ${latest}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card">
               <div class="card-top">
                 <span class="badge badge-cat" th:text="${c.category}">카테고리</span>
-                <span style="color: #999" th:text="${#temporals.format(c.createdAt, 'MM-dd')}">날짜</span>
+                <span style="color: #999" th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd')}">날짜</span>
               </div>
               <span class="card-title" th:text="${c.title}">제목</span>
               <div class="card-info">
