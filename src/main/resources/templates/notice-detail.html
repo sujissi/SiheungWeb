@@ -8,22 +8,31 @@
 <body>
 <div th:replace="~{layout/header :: header}"></div>
 
-<div class="container detail-page">
-    <div class="detail-header">
-        <div class="detail-breadcrumb">홈 / 공지사항</div>
-        <h2 th:text="${title}">공지사항 제목</h2>
-        <div class="detail-meta" th:if="${date != null and !date.isEmpty()}" th:text="${date}">2024-12-14</div>
+<div class="container container-detail">
+    <div class="detail-head">
+        <p class="page-subtitle">홈 / 공지사항</p>
+        <h2 class="page-title" th:text="${title}">공지사항 제목</h2>
+
+        <div class="detail-meta"
+             th:if="${date != null and !date.isEmpty()}"
+             th:text="${date}">
+            2024-12-14
+        </div>
     </div>
 
-    <div class="detail-card">
-        <pre class="detail-body" th:text="${content}">공지사항 내용</pre>
+    <div class="form-box">
+        <div class="detail-content" th:text="${content}">
+            공지사항 내용
+        </div>
     </div>
 
-    <div class="detail-list">
-        <div class="detail-list-title">다른 공지사항</div>
-        <a href="/info/notice/open">[안내] 시:그널 서비스 오픈 안내</a>
-        <a href="/info/notice/maintenance">[점검] 서버 점검 예정 (12/10)</a>
-        <a href="/info/notice/parking-guide">[안내] 불법 주정차 신고 가이드</a>
+    <hr class="divider">
+
+    <div class="section-title">다른 공지사항</div>
+    <div class="card-list">
+        <a class="card" href="/info/notice/open">[안내] 시:그널 서비스 오픈 안내</a>
+        <a class="card" href="/info/notice/maintenance">[점검] 서버 점검 예정 (12/10)</a>
+        <a class="card" href="/info/notice/parking-guide">[안내] 불법 주정차 신고 가이드</a>
     </div>
 </div>
 </body>

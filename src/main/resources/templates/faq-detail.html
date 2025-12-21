@@ -8,21 +8,25 @@
 <body>
 <div th:replace="~{layout/header :: header}"></div>
 
-<div class="container detail-page">
-    <div class="detail-header">
-        <div class="detail-breadcrumb">홈 / FAQ</div>
-        <h2 th:text="${title}">FAQ 제목</h2>
+<div class="container container-detail">
+    <div class="detail-head">
+        <p class="page-subtitle">홈 / FAQ</p>
+        <h2 class="page-title" th:text="${title}">FAQ 제목</h2>
     </div>
 
-    <div class="detail-card">
-        <pre class="detail-body" th:text="${content}">FAQ 내용</pre>
+    <div class="form-box">
+        <div class="detail-content" th:text="${content}">
+            FAQ 내용
+        </div>
     </div>
 
-    <div class="detail-list">
-        <div class="detail-list-title">다른 질문</div>
-        <a href="/info/faq/processing-time">Q. 민원 처리는 얼마나 걸리나요?</a>
-        <a href="/info/faq/likes">Q. 공감 수는 어떤 역할을 하나요?</a>
-        <a href="/info/faq/edit-delete">Q. 민원 수정/삭제는 어떻게 하나요?</a>
+    <hr class="divider">
+
+    <div class="section-title">다른 질문</div>
+    <div class="card-list">
+        <a class="card" href="/info/faq/processing-time">Q. 민원 처리는 얼마나 걸리나요?</a>
+        <a class="card" href="/info/faq/likes">Q. 공감 수는 어떤 역할을 하나요?</a>
+        <a class="card" href="/info/faq/edit-delete">Q. 민원 수정/삭제는 어떻게 하나요?</a>
     </div>
 </div>
 </body>

@@ -59,7 +59,7 @@
                 <a th:each="c : ${latest}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card">
                     <div class="card-top">
                         <span class="badge badge-cat" th:text="${c.category}">카테고리</span>
-                        <span class="section-note" th:text="${#temporals.format(c.createdAt, 'MM-dd')}">날짜</span>
+                        <span class="section-note" th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd')}">날짜</span>
                     </div>
                     <span class="card-title" th:text="${c.title}">제목</span>
                     <div class="card-info">
@@ -75,18 +75,18 @@
         <div class="info-box">
             <h3>📢 공지사항</h3>
             <ul class="info-list">
-                <li><a href="#">[안내] 시:그널 서비스 오픈 안내</a></li>
-                <li><a href="#">[점검] 서버 점검 예정 (12/10)</a></li>
-                <li><a href="#">[안내] 불법 주정차 신고 가이드</a></li>
+                <li><a href="/info/notice/open">[안내] 시:그널 서비스 오픈 안내</a></li>
+                <li><a href="/info/notice/maintenance">[점검] 서버 점검 예정 (12/10)</a></li>
+                <li><a href="/info/notice/parking-guide">[안내] 불법 주정차 신고 가이드</a></li>
             </ul>
         </div>
 
         <div class="info-box">
             <h3>❓ 자주 하는 질문 (FAQ)</h3>
             <ul class="info-list">
-                <li><a href="#">Q. 민원 처리는 얼마나 걸리나요?</a></li>
-                <li><a href="#">Q. 공감 수는 어떤 역할을 하나요?</a></li>
-                <li><a href="#">Q. 민원 수정/삭제는 어떻게 하나요?</a></li>
+                <li><a href="/info/faq/processing-time">Q. 민원 처리는 얼마나 걸리나요?</a></li>
+                <li><a href="/info/faq/likes">Q. 공감 수는 어떤 역할을 하나요?</a></li>
+                <li><a href="/info/faq/edit-delete">Q. 민원 수정/삭제는 어떻게 하나요?</a></li>
             </ul>
         </div>
     </div>
