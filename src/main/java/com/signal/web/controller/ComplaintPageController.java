@@ -45,16 +45,20 @@ public class ComplaintPageController {
             complaints = service.getByCategory(category);
         } else if (status != null && !status.isEmpty()) {
             complaints = service.getByStatus(status);
-        } else if (sort.equals("likes")) {
-            complaints = service.getAllPopular();
         } else {
-            complaints = service.findAll();
+            complaints = service.findAll(sort);
         }
 
         model.addAttribute("top3", service.getTop5());
         model.addAttribute("complaints", complaints);
+
+        model.addAttribute("category", category);
+        model.addAttribute("status", status);
+        model.addAttribute("sort", sort);
+
         return "complaints/list";
     }
+
 
     @GetMapping("/new")
     public String createForm(@RequestParam(required = false) String cat, Model model) {

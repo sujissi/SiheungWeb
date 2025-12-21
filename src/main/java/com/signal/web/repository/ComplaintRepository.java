@@ -26,4 +26,9 @@ public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
     List<Complaint> findUrgentComplaints();
 
     List<Complaint> findTop5ByOrderByCreatedAtDesc();
+
+    List<Complaint> findAllByOrderByStatusAscCreatedAtDesc();
+
+    List<Complaint> findAllByOrderByCreatedAtDesc();
+
 }

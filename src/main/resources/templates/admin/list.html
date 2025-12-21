@@ -75,6 +75,7 @@
 
                         <td>
                             <form th:action="@{|/admin/complaints/status/${c.id}|}" method="post">
+                                <input type="hidden" name="sort" th:value="${currentSort}" />
                                 <select name="status" class="status-select"
                                         th:classappend="${c.status == '완료'} ? ' status-done' : (${c.status == '처리중'} ? ' status-progress' : ' status-received')"
                                         onchange="this.form.submit()">
@@ -105,6 +106,7 @@
 
                         <td>
                             <form th:action="@{|/admin/complaints/delete/${c.id}|}" method="post" onsubmit="return confirm('영구 삭제하시겠습니까?');">
+                                <input type="hidden" name="sort" th:value="${currentSort}" />
                                 <button type="submit" class="btn-mini btn-delete">삭제</button>
                             </form>
                         </td>
@@ -114,6 +116,7 @@
                         <td colspan="7" class="answer-cell">
                             <div class="answer-box-wrapper">
                                 <form th:action="@{|/admin/complaints/answer/${c.id}|}" method="post">
+                                    <input type="hidden" name="sort" th:value="${currentSort}" />
                                     <h4>답변 내용</h4>
                                     <textarea name="answer" rows="3" class="answer-textarea" placeholder="내용을 입력하세요" th:text="${c.answer}"></textarea>
                                     <div class="answer-actions">

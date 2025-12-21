@@ -127,10 +127,6 @@ public class ComplaintService {
         return repository.findByCategoryAndStatus(category, status);
     }
 
-    public List<Complaint> getUrgentList() {
-        return repository.findUrgentComplaints();
-    }
-
     @Transactional
     public void increaseLikes(Long id) {
         Complaint complaint = repository.findById(id)
@@ -166,9 +162,10 @@ public class ComplaintService {
             return repository.findAll(Sort.by(Sort.Direction.ASC, "status")); // 상태별 정렬 (가나다순)
         }
 
-        return repository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        return repository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
     public List<Complaint> getLatest5() {
         return repository.findTop5ByOrderByCreatedAtDesc();
     }
+
 }

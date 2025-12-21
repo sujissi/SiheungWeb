@@ -27,15 +27,12 @@ public class SecurityConfig {
         http
                 // 1. 페이지 권한 설정
                 .authorizeHttpRequests((authorize) -> authorize
-                        // 1. 누구나 접속 가능
+                        .requestMatchers("/complaints/new", "/complaints/new/**").authenticated()
                         .requestMatchers("/", "/complaints/**", "/info/**", "/css/**", "/images/**", "/uploads/**", "/members/**", "/h2-console/**").permitAll()
-
-                        // 2. [추가] /admin/ 으로 시작하는 주소는 'ADMIN' 권한만 가능
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-
-                        // 3. 나머지는 로그인 필수
                         .anyRequest().authenticated()
                 )
+
 
                 // ▼▼▼ [추가 1] H2 콘솔 사용을 위한 CSRF 무시 설정 ▼▼▼
                 .csrf((csrf) -> csrf

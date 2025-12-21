@@ -16,34 +16,38 @@ public class AdminController {
     }
 
     @GetMapping("/complaints")
-    public String adminList(Model model, @RequestParam(required = false, defaultValue = "latest") String sort) {
-        // 1. 서비스에서 정렬된 목록 가져오기
-        model.addAttribute("complaints", complaintService.findAll(sort));
+    public String adminList(Model model,
+                            @RequestParam(required = false, defaultValue = "latest") String sort) {
 
-        // 2. 현재 정렬 상태를 HTML에 알려주기
+        model.addAttribute("complaints", complaintService.findAll(sort));
         model.addAttribute("currentSort", sort);
 
         return "admin/list";
     }
 
-    // 상태 변경 기능
     @PostMapping("/complaints/status/{id}")
-    public String updateStatus(@PathVariable Long id, @RequestParam String status) {
+    public String updateStatus(@PathVariable Long id,
+                               @RequestParam String status,
+                               @RequestParam(required = false, defaultValue = "latest") String sort) {
+
         complaintService.updateStatus(id, status);
-        return "redirect:/admin/complaints";
+        return "redirect:/admin/complaints?sort=" + sort;
     }
 
-    // 답변 등록 기능
     @PostMapping("/complaints/answer/{id}")
-    public String registerAnswer(@PathVariable Long id, @RequestParam String answer) {
+    public String registerAnswer(@PathVariable Long id,
+                                 @RequestParam String answer,
+                                 @RequestParam(required = false, defaultValue = "latest") String sort) {
+
         complaintService.registerAnswer(id, answer);
-        return "redirect:/admin/complaints";
+        return "redirect:/admin/complaints?sort=" + sort;
     }
 
-    // 관리자 권한 강제 삭제
     @PostMapping("/complaints/delete/{id}")
-    public String deleteComplaint(@PathVariable Long id) {
+    public String deleteComplaint(@PathVariable Long id,
+                                  @RequestParam(required = false, defaultValue = "latest") String sort) {
+
         complaintService.delete(id);
-        return "redirect:/admin/complaints";
+        return "redirect:/admin/complaints?sort=" + sort;
     }
 }
