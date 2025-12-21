@@ -28,7 +28,7 @@ public class SecurityConfig {
                 // 1. 페이지 권한 설정
                 .authorizeHttpRequests((authorize) -> authorize
                         // 1. 누구나 접속 가능
-                        .requestMatchers("/", "/complaints/**", "/css/**", "/images/**", "/uploads/**", "/members/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/", "/complaints/**", "/info/**", "/css/**", "/images/**", "/uploads/**", "/members/**", "/h2-console/**").permitAll()
 
                         // 2. [추가] /admin/ 으로 시작하는 주소는 'ADMIN' 권한만 가능
                         .requestMatchers("/admin/**").hasRole("ADMIN")
