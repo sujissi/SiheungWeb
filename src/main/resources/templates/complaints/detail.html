@@ -10,108 +10,95 @@
 
 <div th:replace="layout/header :: header"></div>
 
-<div class="container" style="max-width: 800px;">
+<main class="container container-detail">
     <div class="form-box">
 
-        <div style="border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
-            <div style="margin-bottom: 10px;">
+        <div class="detail-head">
+            <div class="meta-line">
                 <span class="badge badge-cat" th:text="${complaint.category}">카테고리</span>
-                <span class="badge status" style="background: #e3f2fd; color: #0d47a1;" th:text="${complaint.status}">접수완료</span>
+                <span class="badge status"
+                      th:classappend="${complaint.status == '접수'} ? ' status-received' : (${complaint.status == '처리중'} ? ' status-progress' : ' status-done')"
+                      th:text="${complaint.status}">상태</span>
             </div>
-            <h1 th:text="${complaint.title}" style="font-size: 1.5rem; margin: 0 0 10px 0;">민원 제목</h1>
 
-            <div style="color: #666; font-size: 0.9rem; display: flex; gap: 15px;">
+            <h1 class="page-title" th:text="${complaint.title}">민원 제목</h1>
+
+            <div class="detail-meta">
                 <span>📅 <span th:text="${#temporals.format(complaint.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
                 <span>📍 <span th:text="${complaint.location}">위치 정보</span></span>
             </div>
         </div>
-        <div th:if="${complaint.imagePath != null}" style="margin-bottom: 20px; text-align: center;">
-            <img th:src="@{'/uploads/' + ${complaint.imagePath}}"
-                 alt="현장 사진"
-                 style="max-width: 100%; border-radius: 8px; border: 1px solid #ddd;">
-        </div>
-        <div style="min-height: 150px; white-space: pre-wrap; line-height: 1.6; color: #333;" th:text="${complaint.content}">
-            내용
+
+        <div class="detail-image" th:if="${complaint.imagePath != null}">
+            <img th:src="@{'/uploads/' + ${complaint.imagePath}}" alt="현장 사진">
         </div>
 
-        <div id="like-section" style="text-align: center; margin-top: 30px; margin-bottom: 30px;">
+        <div class="detail-content" th:text="${complaint.content}">내용</div>
 
+        <div class="like-section">
             <form th:action="@{|/complaints/like/${complaint.id}|}" method="post">
-                <button type="submit" style="background: white; border: 2px solid #e67e22; color: #e67e22; padding: 8px 25px; border-radius: 50px; font-size: 1rem; cursor: pointer; font-weight: bold; transition: 0.2s;">
-                    ♥ 공감해요 <span th:text="${complaint.likes}">0</span>
-                </button>
+                <button type="submit" class="like-btn">♥ 공감해요 <span th:text="${complaint.likes}">0</span></button>
             </form>
-
         </div>
 
-        <div style="background-color: #f8f9fa; border-radius: 8px; padding: 20px; margin-bottom: 40px;">
-            <h3 style="font-size: 1.1rem; margin-top: 0; margin-bottom: 15px; color: #333;">📢 담당자 답변</h3>
+        <div class="answer-box">
+            <h3 class="answer-title">📢 담당자 답변</h3>
 
             <div th:if="${complaint.answer != null}">
-                <div style="white-space: pre-wrap; line-height: 1.6; color: #444;" th:text="${complaint.answer}"></div>
-                <div style="margin-top: 10px; font-size: 0.85rem; color: #888; text-align: right;">
-                    담당부서: 도로교통과
-                </div>
+                <div class="detail-content" th:text="${complaint.answer}"></div>
+                <div class="answer-dept">담당부서: 도로교통과</div>
             </div>
 
-            <div th:unless="${complaint.answer != null}" style="color: #888; text-align: center; padding: 20px 0;">
+            <div th:unless="${complaint.answer != null}" class="answer-empty">
                 현재 담당 부서에서 내용을 확인하고 있습니다.
             </div>
         </div>
 
         <div class="comment-section">
-            <h3 style="font-size: 1.1rem; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px;">
-                💬 댓글 <span style="color: #e67e22;" th:text="${comments != null ? #lists.size(comments) : 0}">0</span>
-            </h3>
+            <h3>💬 댓글 <span class="comment-count" th:text="${comments != null ? #lists.size(comments) : 0}">0</span></h3>
 
-            <form th:action="@{/comments/add}" method="post" style="background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 5px; margin-bottom: 20px;">
-
+            <form th:action="@{/comments/add}" method="post" class="comment-form">
                 <input type="hidden" name="complaintId" th:value="${complaint.id}" />
-                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <input type="text" name="author" placeholder="닉네임" style="border: 1px solid #ddd; padding: 8px; width: 150px; border-radius: 4px;">
-                    <input type="password" name="password" placeholder="비밀번호" style="border: 1px solid #ddd; padding: 8px; width: 150px; border-radius: 4px;">
+
+                <div class="comment-row">
+                    <input type="text" name="author" placeholder="작성자" class="form-control" required>
+                    <input type="password" name="password" placeholder="비밀번호" class="form-control" required>
                 </div>
-                <div style="display: flex; gap: 10px;">
-                    <textarea name="content" placeholder="댓글을 남겨주세요." style="width: 100%; height: 60px; border: 1px solid #ddd; padding: 10px; border-radius: 4px; resize: none;"></textarea>
-                    <button type="submit" style="background: #333; color: white; border: none; padding: 0 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">등록</button>
+
+                <div class="comment-editor">
+                    <textarea name="content" placeholder="댓글을 남겨주세요" class="form-control" required></textarea>
+                    <button type="submit" class="btn btn-blue">등록</button>
                 </div>
             </form>
 
-            <ul style="list-style: none; padding: 0; margin: 0;">
-                <li th:if="${comments == null or #lists.isEmpty(comments)}" style="text-align: center; color: #999; padding: 30px 0;">
+            <ul class="comment-list">
+                <li th:if="${comments == null or #lists.isEmpty(comments)}" class="comment-empty">
                     첫 번째 댓글을 남겨보세요!
                 </li>
 
-                <li th:if="${comments != null}" th:each="reply : ${comments}" style="border-bottom: 1px solid #eee; padding: 15px 0;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                        <span style="font-weight: bold; font-size: 0.95rem;" th:text="${reply.author}">작성자</span>
-                        <span style="font-size: 0.8rem; color: #999;" th:text="${#temporals.format(reply.createdAt, 'MM-dd HH:mm')}">날짜</span>
+                <li th:if="${comments != null}" th:each="reply : ${comments}" class="comment-item">
+                    <div class="comment-item-top">
+                        <span class="comment-author" th:text="${reply.author}">작성자</span>
+                        <span class="comment-date" th:text="${#temporals.format(reply.createdAt, 'MM-dd HH:mm')}">날짜</span>
                     </div>
-                    <div style="color: #555; line-height: 1.5;" th:text="${reply.content}">내용</div>
+                    <div class="comment-body" th:text="${reply.content}">내용</div>
                 </li>
             </ul>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-
+        <div class="detail-actions">
             <div th:if="${(complaint.author != null and #authentication.name == complaint.author.username) or #authorization.expression('hasRole(''ADMIN'')')}">
                 <form th:action="@{|/complaints/delete/${complaint.id}|}" method="post"
                       onsubmit="return confirm('정말 삭제하시겠습니까? 복구할 수 없습니다.');">
-                    <button type="submit" style="background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold;">
-                        🗑️ 삭제하기
-                    </button>
+                    <button type="submit" class="btn btn-danger">🗑️ 삭제하기</button>
                 </form>
             </div>
 
-            <div sec:authorize="isAnonymous()"></div>
-
-            <a th:href="@{'/complaints/list'}"
-               style="background: #6c757d; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; font-size: 0.95rem; display: inline-block; margin-left: auto;">
-                목록으로
-            </a>
+            <a th:href="@{'/complaints/list'}" class="btn btn-ghost">목록으로</a>
         </div>
+
     </div>
-</div>
+</main>
 
 </body>
 </html>

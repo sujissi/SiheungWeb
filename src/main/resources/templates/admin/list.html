@@ -3,42 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>관리자 페이지</title>
-
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css" />
     <link rel="stylesheet" th:href="@{/css/style.css}">
-
-    <style>
-        body { background-color: #f5f7fa; font-family: 'Pretendard', sans-serif; }
-
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .table-card { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; overflow: hidden; }
-
-        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem; }
-        thead th { background-color: #f8f9fa; color: #333; padding: 12px; text-align: center; border-bottom: 2px solid #ddd; font-weight: 600; }
-        thead th.text-left { text-align: left; }
-
-        tbody td { padding: 12px; border-bottom: 1px solid #eee; vertical-align: middle; color: #444; text-align: center; }
-        tbody td.text-left { text-align: left; }
-
-        /* 상태 선택 박스 */
-        .status-select { padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
-
-        /* 버튼 스타일 */
-        .btn-mini { padding: 5px 10px; border-radius: 4px; cursor: pointer; border: 1px solid #ddd; background: white; font-size: 0.85rem; color: #555; white-space: nowrap;}
-        .btn-mini:hover { background: #f1f1f1; }
-
-        .btn-answer-toggle { color: #007bff; border-color: #cce5ff; }
-        .btn-answer-toggle:hover { background: #e3f2fd; }
-
-        .btn-delete { color: #dc3545; border-color: #f5c6cb; }
-        .btn-delete:hover { background: #fff5f5; }
-
-        /* 답변 행 */
-        .answer-row { display: none; background-color: #fafafa; }
-        .answer-box-wrapper { padding: 15px; border-top: 1px solid #eee; text-align: left; }
-        .answer-textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; resize: none; margin-bottom: 10px; font-family: inherit; font-size: 0.9rem;}
-    </style>
-
     <script>
         function toggleAnswer(id) {
             const row = document.getElementById('answer-row-' + id);
@@ -54,18 +19,17 @@
 
 <div th:replace="layout/header :: header"></div>
 
-<div class="container" style="max-width: 1200px; margin-top: 40px; margin-bottom: 60px;">
+<main class="container container-wide admin-container">
 
     <div class="dashboard-header">
         <div>
-            <h2 style="margin: 0; font-size: 1.5rem; color: #333;">민원 관리 대시보드</h2>
-            <p style="color: #666; margin-top: 5px; font-size: 0.9rem;">전체 민원 및 답변 관리</p>
+            <h2 class="dashboard-title">민원 관리 대시보드</h2>
+            <p class="dashboard-sub">전체 민원 및 답변 관리</p>
         </div>
 
-        <div style="display: flex; gap: 10px;">
+        <div class="admin-actions">
             <form action="/admin/complaints" method="get">
-                <select name="sort" onchange="this.form.submit()"
-                        style="padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; cursor: pointer; color: #555;">
+                <select name="sort" class="select" onchange="this.form.submit()">
                     <option value="latest" th:selected="${currentSort == 'latest'}">최신순</option>
                     <option value="oldest" th:selected="${currentSort == 'oldest'}">과거순</option>
                     <option value="likes" th:selected="${currentSort == 'likes'}">공감순</option>
@@ -73,7 +37,7 @@
                 </select>
             </form>
 
-            <button onclick="location.reload()" class="btn-mini">새로고침</button>
+            <button type="button" onclick="location.reload()" class="btn-mini">새로고침</button>
         </div>
     </div>
 
@@ -81,7 +45,15 @@
         <div class="table-responsive">
             <table>
                 <colgroup>
-                    <col style="width: 50px;">  <col style="width: 100px;"> <col style="width: 110px;"> <col style="width: auto;">  <col style="width: 80px;">  <col style="width: 80px;">  <col style="width: 70px;">  </colgroup>
+                    <col class="col-no">
+                    <col class="col-cat">
+                    <col class="col-status">
+                    <col class="col-title">
+                    <col class="col-likes">
+                    <col class="col-answer">
+                    <col class="col-delete">
+                </colgroup>
+
                 <thead>
                 <tr>
                     <th>No</th>
@@ -93,20 +65,19 @@
                     <th>삭제</th>
                 </tr>
                 </thead>
-                <tbody>
 
+                <tbody>
                 <th:block th:each="c : ${complaints}">
                     <tr>
                         <td th:text="${c.id}">1</td>
 
-                        <td>
-                            <span class="badge badge-cat" th:text="${c.category}" style="font-weight: normal;">도로</span>
-                        </td>
+                        <td><span class="badge badge-cat" th:text="${c.category}">도로</span></td>
 
                         <td>
                             <form th:action="@{|/admin/complaints/status/${c.id}|}" method="post">
-                                <select name="status" class="status-select" onchange="this.form.submit()"
-                                        th:style="${c.status == '완료' ? 'color:#198754; background:#f0fff4; border-color:#bbf7d0;' : (c.status == '처리중' ? 'color:#0d6efd; background:#f0f7ff; border-color:#bae6fd;' : 'color:#dc3545; background:#fff5f5; border-color:#fecaca;')}">
+                                <select name="status" class="status-select"
+                                        th:classappend="${c.status == '완료'} ? ' status-done' : (${c.status == '처리중'} ? ' status-progress' : ' status-received')"
+                                        onchange="this.form.submit()">
                                     <option value="접수" th:selected="${c.status == '접수'}">접수</option>
                                     <option value="처리중" th:selected="${c.status == '처리중'}">처리중</option>
                                     <option value="완료" th:selected="${c.status == '완료'}">완료</option>
@@ -115,21 +86,18 @@
                         </td>
 
                         <td class="text-left">
-                            <a th:href="@{'/complaints/detail/' + ${c.id}}" th:text="${c.title}" target="_blank" style="font-weight: bold; color: #333; text-decoration: none;">민원 제목</a>
-                            <div style="font-size: 0.8rem; color: #888; margin-top: 4px;">
+                            <a th:href="@{'/complaints/detail/' + ${c.id}}" th:text="${c.title}" target="_blank" class="admin-title-link">민원 제목</a>
+                            <div class="admin-subline">
                                 <span th:text="${c.author != null ? c.author.nickname : '익명'}"></span>
-                                <span style="margin: 0 5px; color: #ddd;">|</span>
+                                <span class="sep">|</span>
                                 <span th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd')}"></span>
                             </div>
                         </td>
 
-                        <td>
-                            <span th:text="${c.likes}" style="color: #666; font-weight: bold;">0</span>
-                        </td>
+                        <td><span class="admin-likes" th:text="${c.likes}">0</span></td>
 
                         <td>
-                            <button type="button" class="btn-mini btn-answer-toggle"
-                                    th:onclick="'toggleAnswer(' + ${c.id} + ')'">
+                            <button type="button" class="btn-mini btn-answer-toggle" th:onclick="'toggleAnswer(' + ${c.id} + ')'">
                                 <span th:if="${c.answer == null}">작성</span>
                                 <span th:unless="${c.answer == null}">수정</span>
                             </button>
@@ -143,16 +111,14 @@
                     </tr>
 
                     <tr th:id="'answer-row-' + ${c.id}" class="answer-row">
-                        <td colspan="7" style="padding: 0;">
+                        <td colspan="7" class="answer-cell">
                             <div class="answer-box-wrapper">
                                 <form th:action="@{|/admin/complaints/answer/${c.id}|}" method="post">
-                                    <h4 style="margin: 0 0 8px 0; font-size: 0.9rem; color: #007bff;">답변 내용</h4>
-                                    <textarea name="answer" rows="3" class="answer-textarea"
-                                              placeholder="내용을 입력하세요" th:text="${c.answer}"></textarea>
-                                    <div style="text-align: right;">
-                                        <button type="button" class="btn-mini" style="margin-right: 5px;"
-                                                th:onclick="'toggleAnswer(' + ${c.id} + ')'">취소</button>
-                                        <button type="submit" class="btn-mini" style="background: #0d6efd; color: white; border-color: #0d6efd;">저장</button>
+                                    <h4>답변 내용</h4>
+                                    <textarea name="answer" rows="3" class="answer-textarea" placeholder="내용을 입력하세요" th:text="${c.answer}"></textarea>
+                                    <div class="answer-actions">
+                                        <button type="button" class="btn-mini" th:onclick="'toggleAnswer(' + ${c.id} + ')'">취소</button>
+                                        <button type="submit" class="btn-mini btn-save">저장</button>
                                     </div>
                                 </form>
                             </div>
@@ -163,7 +129,8 @@
             </table>
         </div>
     </div>
-</div>
+
+</main>
 
 </body>
 </html>

@@ -10,28 +10,30 @@
 
 <div th:replace="layout/header :: header"></div>
 
-<div class="container" style="max-width: 900px; margin-top: 30px;">
+<main class="container container-narrow">
 
-    <section th:if="${top3 != null and !#lists.isEmpty(top3)}" style="margin-bottom: 50px;">
-        <h3 style="color: #333; margin-bottom: 15px; display: flex; align-items: center;">
-            🏆 지금 핫한 민원 <span style="font-size: 0.8rem; color: #888; margin-left: 10px; font-weight: normal;">공감이 가장 많은 민원입니다.</span>
-        </h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
-            <a th:each="c : ${top3}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card" style="background: #f0f7ff; border: 1px solid #cce5ff; text-decoration: none; color: inherit; display: block; padding: 15px; border-radius: 8px; transition: transform 0.2s;">
-                <div class="card-top" style="margin-bottom: 10px;">
-                    <span class="badge badge-cat" style="background: #007bff; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem;" th:text="${c.category}">카테고리</span>
-                    <span class="badge badge-like" style="float: right; color: #e67e22; font-weight: bold;">♥ <span th:text="${c.likes}">0</span></span>
+    <section class="top3-section" th:if="${top3 != null and !#lists.isEmpty(top3)}">
+        <div class="section-title">
+            <span>🏆 지금 핫한 민원</span>
+            <span class="section-note">공감이 가장 많은 민원입니다.</span>
+        </div>
+
+        <div class="top3-grid">
+            <a th:each="c : ${top3}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card card-highlight">
+                <div class="card-top">
+                    <span class="badge badge-cat" th:text="${c.category}">카테고리</span>
+                    <span class="badge badge-like">♥ <span th:text="${c.likes}">0</span></span>
                 </div>
-                <div class="card-title" th:text="${c.title}" style="font-weight: bold; font-size: 1.1rem; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">제목</div>
-                <div class="card-info" th:text="${c.location}" style="color: #666; font-size: 0.9rem;">위치</div>
+
+                <div class="card-title" th:text="${c.title}">제목</div>
+                <div class="card-info" th:text="${c.location}">위치</div>
             </a>
         </div>
     </section>
 
-    <div class="filter-bar" style="background: #f8f9fa; padding: 15px 20px; border-radius: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-
-        <form method="get" action="/complaints/list" style="display: flex; gap: 8px; align-items: center;">
-            <select name="category" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+    <div class="filter-bar">
+        <form method="get" action="/complaints/list" class="filter-form">
+            <select name="category" class="select">
                 <option value="">전체 카테고리</option>
                 <option value="도로">🚧 도로/시설</option>
                 <option value="교통">🚌 교통</option>
@@ -40,59 +42,56 @@
                 <option value="기타">📝 기타</option>
             </select>
 
-            <select name="sort" style="padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <select name="sort" class="select">
                 <option value="latest">최신순</option>
                 <option value="likes">공감순</option>
                 <option value="status">처리상태순</option>
             </select>
 
-            <button type="submit" style="background: #555; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer;">검색</button>
+            <button type="submit" class="btn btn-ghost">검색</button>
         </form>
 
-        <a href="/complaints/new" style="background: #28a745; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 0.95rem;">
-            ✏️ 민원 작성하기
-        </a>
+        <a href="/complaints/new" class="btn btn-primary">✏️ 민원 작성하기</a>
     </div>
 
     <div class="card-list">
 
-        <div th:if="${#lists.isEmpty(complaints)}" style="text-align: center; padding: 60px 0; color: #888; border: 1px dashed #ddd; border-radius: 8px;">
-            <div style="font-size: 3rem; margin-bottom: 10px;">📭</div>
+        <div th:if="${#lists.isEmpty(complaints)}" class="empty-state">
+            <div class="empty-icon">📭</div>
             <p>등록된 민원이 없거나 검색 결과가 없습니다.</p>
         </div>
 
-        <a th:each="c : ${complaints}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card"
-           style="display: block; text-decoration: none; color: inherit; background: white; border: 1px solid #eee; border-radius: 8px; padding: 20px; margin-bottom: 15px; transition: box-shadow 0.2s;">
+        <a th:each="c : ${complaints}" th:href="@{'/complaints/detail/' + ${c.id}}" class="card card-row">
 
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="flex: 1; padding-right: 15px;">
-                    <div style="margin-bottom: 8px;">
-                        <span th:if="${c.status == '접수'}" style="background: #e9ecef; color: #495057; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-right: 5px;" th:text="${c.status}"></span>
-                        <span th:unless="${c.status == '접수'}" style="background: #d4edda; color: #155724; font-size: 0.8rem; padding: 2px 6px; border-radius: 4px; margin-right: 5px;" th:text="${c.status}"></span>
+            <div class="card-row-inner">
+                <div class="card-row-main">
+                    <div class="meta-line">
+                        <span class="badge status"
+                              th:classappend="${c.status == '접수'} ? ' status-received' : (${c.status == '처리중'} ? ' status-progress' : ' status-done')"
+                              th:text="${c.status}">상태</span>
 
-                        <span style="color: #888; font-size: 0.85rem;" th:text="${c.category}"></span>
+                        <span class="section-note" th:text="${c.category}">카테고리</span>
                     </div>
 
-                    <h3 th:text="${c.title}" style="margin: 0 0 8px 0; font-size: 1.15rem; color: #333;">민원 제목</h3>
+                    <h3 class="card-title" th:text="${c.title}">민원 제목</h3>
 
-                    <div style="color: #999; font-size: 0.85rem;">
+                    <div class="card-info">
                         📍 <span th:text="${c.location}">위치</span>
-                        <span style="margin: 0 5px;">|</span>
+                        <span class="section-note">|</span>
                         <span th:text="${#temporals.format(c.createdAt, 'yyyy-MM-dd')}">2025-12-14</span>
                     </div>
                 </div>
 
-                <div style="text-align: center; min-width: 60px; border-left: 1px solid #f1f1f1; padding-left: 15px;">
-                    <div style="font-size: 0.8rem; color: #999; margin-bottom: 5px;">공감</div>
-                    <div style="font-size: 1.3rem; font-weight: bold; color: #e67e22;">
-                        ♥ <span th:text="${c.likes}">0</span>
-                    </div>
+                <div class="card-row-meta">
+                    <div class="meta-label">공감</div>
+                    <div class="meta-like">♥ <span th:text="${c.likes}">0</span></div>
                 </div>
             </div>
+
         </a>
 
     </div>
-</div>
+</main>
 
 </body>
 </html>

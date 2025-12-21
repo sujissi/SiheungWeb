@@ -1,8 +1,8 @@
 <div th:fragment="header" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <header>
+    <header class="site-header">
         <div class="header-inner">
             <a href="/complaints/" class="logo">
-                <img th:src="@{/images/logo.png}" alt="시:그널 로고" height="80">
+                <img th:src="@{/images/logo.png}" alt="시:그널 로고" class="logo-img">
             </a>
 
             <nav class="nav-links">
@@ -13,10 +13,9 @@
 
                 <a href="/members/login" sec:authorize="isAnonymous()">로그인</a>
                 <a href="/members/signup" sec:authorize="isAnonymous()">회원가입</a>
-                <a href="/admin/complaints" sec:authorize="hasRole('ADMIN')" style="color: red; font-weight: bold;">관리자</a>
+                <a href="/admin/complaints" class="nav-admin" sec:authorize="hasRole('ADMIN')">관리자</a>
 
                 <a href="/members/logout" sec:authorize="isAuthenticated()">로그아웃</a>
-            </nav>
             </nav>
         </div>
     </header>

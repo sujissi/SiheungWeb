@@ -8,29 +8,37 @@
 <body>
 <div th:replace="layout/header :: header"></div>
 
-<div class="container" style="max-width: 400px; margin-top: 50px;">
-    <h2 style="text-align: center; margin-bottom: 20px;">회원가입</h2>
+<main class="container container-xs">
+    <div class="page-head centered">
+        <h2 class="page-title">회원가입</h2>
+        <p class="page-subtitle">시흥시 생활민원 플랫폼 시:그널에 오신 것을 환영합니다.</p>
+    </div>
 
     <form th:action="@{/members/signup}" method="post" class="form-box">
         <div class="form-group">
             <label>아이디</label>
             <input type="text" name="username" class="form-control" required>
         </div>
+
         <div class="form-group">
             <label>비밀번호</label>
             <input type="password" name="password" class="form-control" required>
         </div>
+
         <div class="form-group">
             <label>닉네임</label>
             <input type="text" name="nickname" class="form-control" required>
         </div>
+
         <div class="form-group">
             <label>이메일 (선택)</label>
             <input type="email" name="email" class="form-control" placeholder="선택사항입니다">
         </div>
 
-        <button type="submit" class="btn-submit" style="margin-top: 20px; background: #28a745;">가입하기</button>
+        <button type="submit" class="btn btn-primary btn-block">가입하기</button>
+        <a class="auth-link" href="/members/login">이미 계정이 있으신가요? 로그인</a>
     </form>
-</div>
+</main>
+
 </body>
 </html>
