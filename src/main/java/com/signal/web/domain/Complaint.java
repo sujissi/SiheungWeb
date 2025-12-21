@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -13,6 +15,9 @@ public class Complaint {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private Member author;
+
+    @OneToMany(mappedBy = "complaint", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

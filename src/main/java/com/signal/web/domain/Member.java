@@ -3,6 +3,7 @@ package com.signal.web.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -22,4 +23,11 @@ public class Member {
 
     @Column(unique = true)
     private String email;
+
+    @Column(length = 512)
+    private String loginToken;
+
+    private LocalDateTime lastLoginAt;
+
+    private LocalDateTime lastSeenAt;
 }
