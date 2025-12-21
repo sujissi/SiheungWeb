@@ -90,6 +90,81 @@ header {
   width: 100%;
 }
 
+.main-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin: 28px 0;
+}
+
+.main-grid section {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.main-grid .section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.main-grid .card-list {
+  display: grid;
+  gap: 12px;
+}
+
+.main-grid .card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.main-grid .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 22px rgba(15, 23, 42, 0.12);
+}
+
+.main-grid .card-title {
+  display: block;
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.main-grid .card-info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--muted-text);
+  font-size: 0.85rem;
+}
+
+.badge-loc {
+  background: rgba(15, 23, 42, 0.06);
+  color: var(--text-color);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
 .form-box {
   background: var(--card-bg);
   border-radius: 16px;
